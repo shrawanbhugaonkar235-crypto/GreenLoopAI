@@ -1,0 +1,41 @@
+# Environment and secrets
+.env
+*.env
+*.pem
+*.key
+*.p12
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+.project
+.classpath
+.settings/
+.idea/
+*.iml
+
+# OS and Editors
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+
+# Models & Large binaries
+ai-service/models/*.pt
+ai-service/models/*.onnx
+ai-service/models/*.bin

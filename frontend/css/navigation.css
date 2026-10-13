@@ -1,0 +1,132 @@
+/* ==========================================================================
+   GreenLoopAI — Navigation Stylesheet
+   Responsive Sidebar, Mobile Hamburger Drawer, Header Breadcrumbs & Tab Bar
+   ========================================================================== */
+
+/* --- Sidebar Shell --- */
+.app-sidebar {
+  width: var(--sidebar-width, 260px);
+  background-color: var(--color-surface, #ffffff);
+  border-right: 1px solid var(--color-border, #e5e7eb);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: width var(--transition-normal, 200ms ease),
+              transform var(--transition-normal, 200ms ease);
+}
+
+.app-sidebar.collapsed {
+  width: var(--sidebar-collapsed-width, 72px);
+}
+
+.app-sidebar.collapsed .sidebar-brand-text,
+.app-sidebar.collapsed .nav-item-label,
+.app-sidebar.collapsed .nav-item-badge,
+.app-sidebar.collapsed .sidebar-footer-info {
+  display: none;
+}
+
+.app-sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+.app-sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 16px 8px;
+}
+
+/* --- Mobile Slide-out Drawer --- */
+@media (max-width: 768px) {
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    box-shadow: none;
+    z-index: 1000;
+  }
+
+  .app-sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(21, 27, 31, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms ease, visibility 200ms ease;
+  }
+
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* --- Navigation Links --- */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 8px);
+  color: var(--color-text-secondary, #37414B);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  min-height: 44px; /* Touch target requirement */
+  transition: all 150ms ease;
+}
+
+.nav-item:hover {
+  background-color: var(--color-surface-hover, #f3f4f6);
+  color: var(--color-text-primary, #151B1F);
+}
+
+.nav-item.active {
+  background-color: var(--color-primary-light, #E8F7DD);
+  color: var(--color-primary-dark, #4A8E24);
+  font-weight: 600;
+  border-color: rgba(102, 181, 57, 0.2);
+}
+
+.nav-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Accessible Focus Rings --- */
+.nav-item:focus-visible {
+  outline: 2px solid var(--color-primary, #66B539);
+  outline-offset: 2px;
+}

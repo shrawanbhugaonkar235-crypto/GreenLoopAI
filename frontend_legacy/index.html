@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-density="comfortable" data-font-size="medium">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GreenLoopAI — AI-Powered Platform for Smart Waste Verification & Automated EPR Compliance">
+  <title>GreenLoopAI — Smart Waste Verification & EPR Compliance</title>
+
+  <!-- Google Font (Inter) & Fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Core Application Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/verification.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/assistant.css">
+</head>
+<body>
+  <div id="app-root">
+    <!-- Backdrop Overlay for Mobile Sidebar Drawer -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- ====================================================================
+         1. SIDEBAR NAVIGATION SHELL
+         ==================================================================== -->
+    <aside id="app-sidebar" class="app-sidebar" aria-label="Sidebar Navigation">
+      <!-- Sidebar Header / Logo -->
+      <div class="sidebar-header">
+        <div class="sidebar-brand-logo" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+          </svg>
+        </div>
+        <div class="sidebar-brand-text">
+          <span class="brand-title">GreenLoop<span>AI</span></span>
+          <span class="brand-subtitle">Smart Waste Verification</span>
+        </div>
+      </div>
+
+      <!-- Navigation Items -->
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Core Platform</span>
+        
+        <a href="#dashboard" class="nav-item active" data-view-target="dashboard" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="9" rx="1"/>
+            <rect x="14" y="3" width="7" height="5" rx="1"/>
+            <rect x="14" y="12" width="7" height="9" rx="1"/>
+            <rect x="3" y="16" width="7" height="5" rx="1"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#verify" class="nav-item" data-view-target="verify" id="nav-verify">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+          <span>Verify Waste</span>
+        </a>
+
+        <a href="#result" class="nav-item" data-view-target="result" id="nav-result">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/>
+          </svg>
+          <span>Verification Result</span>
+        </a>
+
+        <a href="#recycling" class="nav-item" data-view-target="recycling" id="nav-recycling">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          <span>How to Recycle</span>
+        </a>
+
+        <a href="#history" class="nav-item" data-view-target="history" id="nav-history">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Scan History</span>
+        </a>
+
+        <span class="nav-section-label">EPR & Rewards</span>
+
+        <a href="#rewards" class="nav-item" data-view-target="rewards" id="nav-rewards">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8"/>
+            <line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/>
+            <path d="M15 9.5c0-.8-.7-1.5-1.5-1.5h-3c-.8 0-1.5.7-1.5 1.5 0 2 6 1 6 3 0 .8-.7 1.5-1.5 1.5h-3c-.8 0-1.5-.7-1.5-1.5"/>
+          </svg>
+          <span>GreenCoins</span>
+        </a>
+
+        <a href="#epr" class="nav-item" data-view-target="epr" id="nav-epr">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <span>EPR Compliance</span>
+        </a>
+
+        <a href="#analytics" class="nav-item" data-view-target="analytics" id="nav-analytics">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Analytics</span>
+        </a>
+
+        <span class="nav-section-label">System</span>
+
+        <a href="#settings" class="nav-item" data-view-target="settings" id="nav-settings">
+          <svg class="nav-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer / Status -->
+      <div class="sidebar-footer">
+        <div class="system-status-indicator" title="Service connection state">
+          <span class="status-dot disconnected" id="service-dot"></span>
+          <div>
+            <div class="status-text">Backend Service</div>
+            <div class="status-sub" id="service-sub-text">Not Connected</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. MAIN WORKSPACE & TOPBAR
+         ==================================================================== -->
+    <main class="app-main">
+      <!-- Top Navigation Bar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle Sidebar Navigation">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+
+          <nav class="topbar-breadcrumb" aria-label="Breadcrumb">
+            <span class="breadcrumb-app">GreenLoopAI</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" id="breadcrumb-current">Dashboard</span>
+          </nav>
+        </div>
+
+        <!-- Global Search UI -->
+        <div class="topbar-search-wrapper">
+          <svg class="topbar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="search" id="global-search" class="topbar-search-input" placeholder="Search records, brands, scans..." autocomplete="off">
+        </div>
+
+        <!-- Topbar Right Profile & Alerts -->
+        <div class="topbar-right">
+          <button id="btn-notifications" class="topbar-action-btn" title="View Notifications" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="btn-badge"></span>
+          </button>
+
+          <div class="user-profile-chip" id="user-profile-chip" title="User status">
+            <div class="user-avatar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="user-info-text">
+              <span class="user-name">Not connected</span>
+              <span class="user-status">No user session</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Workspace Views Container -->
+      <div class="app-workspace" id="app-workspace">
+        
+        <!-- ================================================================
+             VIEW 1: DASHBOARD
+             ================================================================ -->
+        <section id="view-dashboard" class="view-section active">
+          <!-- View Header -->
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Dashboard</h1>
+              <p class="view-subtitle">Monitor your GreenLoopAI verification activity.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary" id="btn-dashboard-verify" data-navigate="verify">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Verify Waste
+              </button>
+            </div>
+          </div>
+
+          <div class="dashboard-container">
+            <!-- System Connection Banner -->
+            <div class="system-banner">
+              <div class="system-banner-left">
+                <div class="system-banner-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="system-banner-title">Verification Service Not Connected</div>
+                  <div class="system-banner-desc">Connect the backend API to enable live YOLOv8 detection, brand verification, and EPR record syncing.</div>
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btn-dashboard-connect">Service Info</button>
+            </div>
+
+            <!-- Metric Cards (Empty States) -->
+            <div class="stat-card-grid">
+              <!-- Card 1: Total Scans -->
+              <div class="stat-card">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">Total Scans</span>
+                  <div class="stat-card-icon-box">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="stat-card-value">—</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>Data unavailable</span>
+                </div>
+              </div>
+
+              <!-- Card 2: Verified Scans -->
+              <div class="stat-card">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">Verified Scans</span>
+                  <div class="stat-card-icon-box">
+                    <svg viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="stat-card-value">—</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>Waiting for connected system</span>
+                </div>
+              </div>
+
+              <!-- Card 3: GreenCoins -->
+              <div class="stat-card">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">GreenCoins</span>
+                  <div class="stat-card-icon-box">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8"/>
+                      <line x1="12" y1="2" x2="12" y2="4"/>
+                      <line x1="12" y1="20" x2="12" y2="22"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="stat-card-value">—</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>No reward data available</span>
+                </div>
+              </div>
+
+              <!-- Card 4: Verification Rate -->
+              <div class="stat-card">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">Verification Rate</span>
+                  <div class="stat-card-icon-box">
+                    <svg viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="stat-card-value">—</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>No verification data available</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pipeline Overview Card -->
+            <div class="pipeline-overview-card">
+              <div class="pipeline-overview-header">
+                <div>
+                  <h2 class="card-title">Verification Workflow</h2>
+                  <p class="card-subtitle">Detect • Verify • Reward pipeline stages</p>
+                </div>
+                <span class="pipeline-badge">Pipeline Architecture</span>
+              </div>
+
+              <div class="workflow-pipeline">
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">01 — DETECT</span>
+                    <svg class="workflow-step-icon" viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                    </svg>
+                  </div>
+                  <div class="workflow-step-title">Waste Detection</div>
+                  <div class="workflow-step-desc">Identifies waste categories (Plastic, Metal, Glass, Paper, Organic) via vision models.</div>
+                  <div class="workflow-step-status">
+                    <span class="badge-dot"></span> Waiting for image input
+                  </div>
+                </div>
+
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">02 — VERIFY</span>
+                    <svg class="workflow-step-icon" viewBox="0 0 24 24">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                  </div>
+                  <div class="workflow-step-title">Brand & Authenticity</div>
+                  <div class="workflow-step-desc">OCR brand text extraction, brand registry match, and EXIF authenticity analysis.</div>
+                  <div class="workflow-step-status">
+                    <span class="badge-dot"></span> Verification service offline
+                  </div>
+                </div>
+
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">03 — SCORE</span>
+                    <svg class="workflow-step-icon" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 6v6l4 2"/>
+                    </svg>
+                  </div>
+                  <div class="workflow-step-title">Verification Score</div>
+                  <div class="workflow-step-desc">Computes composite verification index from vision confidence, brand match, and metadata.</div>
+                  <div class="workflow-step-status">
+                    <span class="badge-dot"></span> Score pending
+                  </div>
+                </div>
+
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">04 — REWARD</span>
+                    <svg class="workflow-step-icon" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8"/>
+                      <line x1="12" y1="2" x2="12" y2="4"/>
+                      <line x1="12" y1="20" x2="12" y2="22"/>
+                    </svg>
+                  </div>
+                  <div class="workflow-step-title">GreenCoins & EPR</div>
+                  <div class="workflow-step-desc">Issues tokenized rewards and maintains immutable EPR compliance evidence records.</div>
+                  <div class="workflow-step-status">
+                    <span class="badge-dot"></span> Rewards pending
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Action Grid -->
+            <div class="quick-action-grid">
+              <a href="#verify" class="quick-action-card" data-navigate="verify">
+                <div class="quick-action-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                  </svg>
+                </div>
+                <div class="quick-action-title">Verify Waste Image</div>
+                <div class="quick-action-desc">Upload local waste photo for detection and verification workflow.</div>
+              </a>
+
+              <a href="#history" class="quick-action-card" data-navigate="history">
+                <div class="quick-action-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div class="quick-action-title">Scan History</div>
+                <div class="quick-action-desc">Access full audit log and inspection records.</div>
+              </a>
+
+              <a href="#epr" class="quick-action-card" data-navigate="epr">
+                <div class="quick-action-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <div class="quick-action-title">EPR Compliance</div>
+                <div class="quick-action-desc">Review Extended Producer Responsibility evidence and records.</div>
+              </a>
+
+              <a href="#analytics" class="quick-action-card" data-navigate="analytics">
+                <div class="quick-action-icon">
+                  <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                  </svg>
+                </div>
+                <div class="quick-action-title">Analytics & Trends</div>
+                <div class="quick-action-desc">Explore verification metrics and compliance breakdown.</div>
+              </a>
+            </div>
+
+            <!-- Two-Column Empty States -->
+            <div class="dashboard-grid">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Recent Verification Activity</h3>
+                  <span class="badge badge-neutral">Live Audit</span>
+                </div>
+                <div class="card-body">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div class="empty-state-title">No Verification Activity</div>
+                    <div class="empty-state-desc">No verification records are available yet. Upload a waste image to start verification.</div>
+                    <div class="empty-state-actions">
+                      <button class="btn btn-primary btn-sm" data-navigate="verify">Verify Waste</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">EPR Compliance Evidence</h3>
+                  <span class="badge badge-neutral">Producer Ledger</span>
+                </div>
+                <div class="card-body">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                      </svg>
+                    </div>
+                    <div class="empty-state-title">No EPR Records</div>
+                    <div class="empty-state-desc">EPR evidence will appear when verification records are available.</div>
+                    <div class="empty-state-actions">
+                      <button class="btn btn-outline btn-sm" data-navigate="epr">View EPR Workspace</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 2: VERIFY WASTE (PRIMARY FEATURE)
+             ================================================================ -->
+        <section id="view-verify" class="view-section">
+          <!-- View Header -->
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Verify Waste</h1>
+              <p class="view-subtitle">Upload a waste image to begin the verification workflow.</p>
+            </div>
+          </div>
+
+          <!-- Workflow Steps Banner -->
+          <div class="workflow-pipeline">
+            <div class="workflow-step-card">
+              <div class="workflow-step-header">
+                <span class="workflow-step-number">01 — DETECT</span>
+              </div>
+              <div class="workflow-step-title">Waste Detection</div>
+              <div class="workflow-step-desc">YOLOv8 vision model identifies waste item category.</div>
+            </div>
+            <div class="workflow-step-card">
+              <div class="workflow-step-header">
+                <span class="workflow-step-number">02 — VERIFY</span>
+              </div>
+              <div class="workflow-step-title">Brand & Authenticity</div>
+              <div class="workflow-step-desc">OCR brand recognition and EXIF metadata verification.</div>
+            </div>
+            <div class="workflow-step-card">
+              <div class="workflow-step-header">
+                <span class="workflow-step-number">03 — SCORE</span>
+              </div>
+              <div class="workflow-step-title">Verification Score</div>
+              <div class="workflow-step-desc">Calculation of composite trust index (0–100).</div>
+            </div>
+            <div class="workflow-step-card">
+              <div class="workflow-step-header">
+                <span class="workflow-step-number">04 — REWARD</span>
+              </div>
+              <div class="workflow-step-title">GreenCoins</div>
+              <div class="workflow-step-desc">Reward allocation and automated EPR record creation.</div>
+            </div>
+          </div>
+
+          <div class="verification-layout">
+            <!-- Left Column: Upload & Local File API Preview -->
+            <div class="upload-panel">
+              <!-- Upload Dropzone -->
+              <div class="upload-dropzone" id="upload-dropzone">
+                <input type="file" id="waste-file-input" class="file-input-hidden" accept=".jpg,.jpeg,.png,.webp" aria-label="Upload waste image">
+                <div class="upload-icon-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                  </svg>
+                </div>
+                <div class="upload-title">Upload Waste Image</div>
+                <div class="upload-subtitle">Drag and drop an image here or browse your device.</div>
+                <button type="button" class="btn btn-primary" id="btn-browse-image">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Browse Image
+                </button>
+
+                <div class="upload-meta-info">
+                  <span class="upload-meta-pill">Supported: JPG, JPEG, PNG, WEBP</span>
+                  <span class="upload-meta-pill">Maximum Size: 10 MB</span>
+                </div>
+              </div>
+
+              <!-- Local Image Preview Card -->
+              <div class="preview-card" id="upload-preview-card">
+                <div class="card-header">
+                  <h3 class="card-title">Image Preview</h3>
+                  <span class="badge badge-success">Local File Loaded</span>
+                </div>
+                <div class="preview-image-container">
+                  <img id="preview-image-element" class="preview-image" alt="Waste preview">
+                </div>
+                <div class="preview-details">
+                  <div class="preview-meta-grid">
+                    <div class="preview-meta-item">
+                      <span class="preview-meta-label">File Name</span>
+                      <span class="preview-meta-value" id="preview-file-name">—</span>
+                    </div>
+                    <div class="preview-meta-item">
+                      <span class="preview-meta-label">File Size</span>
+                      <span class="preview-meta-value" id="preview-file-size">—</span>
+                    </div>
+                    <div class="preview-meta-item">
+                      <span class="preview-meta-label">File Type</span>
+                      <span class="preview-meta-value" id="preview-file-type">—</span>
+                    </div>
+                  </div>
+
+                  <!-- Service Status Box -->
+                  <div class="service-status-box">
+                    <svg viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span>Verification service is not connected. Connect the verification backend to process this image.</span>
+                  </div>
+
+                  <div class="preview-actions">
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button class="btn btn-outline btn-sm" id="btn-change-image">Change Image</button>
+                      <button class="btn btn-danger-outline btn-sm" id="btn-remove-image">Remove Image</button>
+                    </div>
+                    <button class="btn btn-primary" id="btn-start-verification">
+                      <svg class="btn-icon" viewBox="0 0 24 24">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                      Start Verification
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Verification Result State Preview -->
+            <div class="verification-results-panel">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Verification Diagnostics</h3>
+                  <span class="badge badge-neutral">Pipeline Status</span>
+                </div>
+                <div class="card-body">
+                  <!-- Circular Verification Score UI (Empty initially) -->
+                  <div class="score-gauge-container">
+                    <div class="score-gauge-wrapper">
+                      <svg class="score-gauge-svg" viewBox="0 0 160 160">
+                        <circle class="score-gauge-bg" cx="80" cy="80" r="70"/>
+                        <circle class="score-gauge-fill" id="score-gauge-circle" cx="80" cy="80" r="70"/>
+                      </svg>
+                      <div class="score-gauge-center">
+                        <span class="score-gauge-value" id="score-display-value">—</span>
+                        <span class="score-gauge-max">/ 100</span>
+                      </div>
+                    </div>
+                    <span class="score-gauge-caption" id="score-display-status">Verification result unavailable</span>
+                  </div>
+
+                  <!-- Verification Inspection Cards -->
+                  <div class="result-metric-grid" style="margin-top: 1.25rem;">
+                    <!-- Waste Detection Card -->
+                    <div class="result-metric-card">
+                      <div class="result-metric-header">
+                        <span class="result-metric-title">Waste Detection</span>
+                        <span class="badge badge-neutral" id="diag-waste-stage-badge">Stage 1</span>
+                      </div>
+                      <div class="result-metric-body">
+                        <div class="result-item-row">
+                          <span class="label">Waste Category:</span>
+                          <span class="value" id="diag-waste-category">—</span>
+                        </div>
+                        <div class="result-item-row">
+                          <span class="label">Confidence:</span>
+                          <span class="value" id="diag-waste-confidence">—</span>
+                        </div>
+                      </div>
+                      <div class="result-item-status">
+                        <span class="label">Status:</span>
+                        <span class="badge badge-neutral" id="diag-waste-status">Waiting for verification</span>
+                      </div>
+                    </div>
+
+                    <!-- Brand Verification Card -->
+                    <div class="result-metric-card">
+                      <div class="result-metric-header">
+                        <span class="result-metric-title">Brand Verification</span>
+                        <span class="badge badge-neutral" id="diag-brand-stage-badge">Stage 2</span>
+                      </div>
+                      <div class="result-metric-body">
+                        <div class="result-item-row">
+                          <span class="label">Detected Brand:</span>
+                          <span class="value" id="diag-brand-name">—</span>
+                        </div>
+                        <div class="result-item-row">
+                          <span class="label">Brand Match:</span>
+                          <span class="value" id="diag-brand-match">—</span>
+                        </div>
+                      </div>
+                      <div class="result-item-status">
+                        <span class="label">Status:</span>
+                        <span class="badge badge-neutral" id="diag-brand-status">Waiting for verification</span>
+                      </div>
+                    </div>
+
+                    <!-- Authenticity Card -->
+                    <div class="result-metric-card">
+                      <div class="result-metric-header">
+                        <span class="result-metric-title">Authenticity</span>
+                        <span class="badge badge-neutral" id="diag-auth-stage-badge">Stage 3</span>
+                      </div>
+                      <div class="result-metric-body">
+                        <div class="result-item-row">
+                          <span class="label">Authenticity:</span>
+                          <span class="value" id="diag-auth-score">—</span>
+                        </div>
+                        <div class="result-item-row">
+                          <span class="label">Metadata:</span>
+                          <span class="value" id="diag-auth-metadata">—</span>
+                        </div>
+                      </div>
+                      <div class="result-item-status">
+                        <span class="label">Status:</span>
+                        <span class="badge badge-neutral" id="diag-auth-status">Waiting for verification</span>
+                      </div>
+                    </div>
+
+                    <!-- GreenCoins Incentive Card -->
+                    <div class="result-metric-card">
+                      <div class="result-metric-header">
+                        <span class="result-metric-title">Reward Yield</span>
+                        <span class="badge badge-neutral" id="diag-reward-stage-badge">Stage 4</span>
+                      </div>
+                      <div class="result-metric-body">
+                        <div class="result-item-row">
+                          <span class="label">GreenCoins Earned:</span>
+                          <span class="value" id="diag-reward-coins">+ —</span>
+                        </div>
+                        <div class="result-item-row">
+                          <span class="label">Reward Tier:</span>
+                          <span class="value" id="diag-reward-tier">—</span>
+                        </div>
+                      </div>
+                      <div class="result-item-status">
+                        <span class="label">Status:</span>
+                        <span class="badge badge-neutral" id="diag-reward-status">Waiting for verification</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 3: VERIFICATION RESULT SCREEN
+             ================================================================ -->
+        <section id="view-result" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Verification Result</h1>
+              <p class="view-subtitle">Detailed inspection scores, brand matching, authenticity, and reward calculation.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline" data-navigate="verify">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Upload
+              </button>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Left: Verification Score & Diagnostic Summary -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Overall Verification Score</h3>
+                <span class="badge badge-neutral" id="res-score-badge">Pending AI Pipeline</span>
+              </div>
+              <div class="card-body">
+                <div class="score-gauge-container" style="background: transparent; border: none;">
+                  <div class="score-gauge-wrapper">
+                    <svg class="score-gauge-svg" viewBox="0 0 160 160">
+                      <circle class="score-gauge-bg" cx="80" cy="80" r="70"/>
+                      <circle class="score-gauge-fill" id="res-score-circle" cx="80" cy="80" r="70"/>
+                    </svg>
+                    <div class="score-gauge-center">
+                      <span class="score-gauge-value" id="res-score-value">—</span>
+                      <span class="score-gauge-max">/ 100</span>
+                    </div>
+                  </div>
+                  <span class="score-gauge-caption" id="res-score-status">Verification result unavailable</span>
+                  <p class="empty-state-desc" style="margin-top: 0.5rem; text-align: center;">
+                    Score calculated from vision confidence, brand matching index, and EXIF authenticity.
+                  </p>
+                </div>
+
+                <!-- GreenCoins Result Card -->
+                <div class="rewards-result-card" style="margin-top: 1rem;">
+                  <div class="rewards-result-left">
+                    <div class="rewards-coin-icon">
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="8"/>
+                        <line x1="12" y1="2" x2="12" y2="4"/>
+                        <line x1="12" y1="20" x2="12" y2="22"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="rewards-title">GreenCoins Reward</div>
+                      <div class="rewards-sub">Earned for verified recycling contribution</div>
+                    </div>
+                  </div>
+                  <div class="rewards-amount" id="res-reward-coins">+ —</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Inspection Breakdown -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Inspection Breakdown</h3>
+                <span class="badge badge-neutral" id="res-breakdown-badge">Deep Analysis</span>
+              </div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="result-metric-card">
+                  <div class="result-metric-header">
+                    <span class="result-metric-title">Waste Detection (YOLOv8)</span>
+                    <span class="badge badge-neutral" id="res-waste-stage-badge">Stage 1</span>
+                  </div>
+                  <div class="result-metric-body">
+                    <div class="result-item-row">
+                      <span class="label">Waste Category:</span>
+                      <span class="value" id="res-waste-category">—</span>
+                    </div>
+                    <div class="result-item-row">
+                      <span class="label">Confidence:</span>
+                      <span class="value" id="res-waste-confidence">—</span>
+                    </div>
+                  </div>
+                  <div class="result-item-status">
+                    <span class="label">Status:</span>
+                    <span class="badge badge-neutral" id="res-waste-status">Waiting for verification</span>
+                  </div>
+                </div>
+
+                <div class="result-metric-card">
+                  <div class="result-metric-header">
+                    <span class="result-metric-title">Brand Verification (OCR)</span>
+                    <span class="badge badge-neutral" id="res-brand-stage-badge">Stage 2</span>
+                  </div>
+                  <div class="result-metric-body">
+                    <div class="result-item-row">
+                      <span class="label">Detected Brand:</span>
+                      <span class="value" id="res-brand-name">—</span>
+                    </div>
+                    <div class="result-item-row">
+                      <span class="label">Brand Match:</span>
+                      <span class="value" id="res-brand-match">—</span>
+                    </div>
+                  </div>
+                  <div class="result-item-status">
+                    <span class="label">Status:</span>
+                    <span class="badge badge-neutral" id="res-brand-status">Waiting for verification</span>
+                  </div>
+                </div>
+
+                <div class="result-metric-card">
+                  <div class="result-metric-header">
+                    <span class="result-metric-title">Authenticity (EXIF & Metadata)</span>
+                    <span class="badge badge-neutral" id="res-auth-stage-badge">Stage 3</span>
+                  </div>
+                  <div class="result-metric-body">
+                    <div class="result-item-row">
+                      <span class="label">Authenticity:</span>
+                      <span class="value" id="res-auth-score">—</span>
+                    </div>
+                    <div class="result-item-row">
+                      <span class="label">Metadata:</span>
+                      <span class="value" id="res-auth-metadata">—</span>
+                    </div>
+                  </div>
+                  <div class="result-item-status">
+                    <span class="label">Status:</span>
+                    <span class="badge badge-neutral" id="res-auth-status">Waiting for verification</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real "How to Recycle This" Guidance Banner Card -->
+          <div class="card card-recycle-action" id="card-recycle-action" style="margin-top: 1.5rem; border: 1.5px solid var(--border-color); background: var(--bg-surface);">
+            <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; padding: 1.5rem;">
+              <div style="display: flex; align-items: center; gap: 1.25rem;">
+                <div class="recycle-action-icon" style="width: 52px; height: 52px; border-radius: 12px; background: rgba(102, 181, 57, 0.12); color: #4D8F2A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.25rem;">
+                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-color);" id="res-recycle-category-name">Waste Recycling Guidance</h3>
+                    <span class="badge badge-neutral" id="res-recycle-status-badge">Awaiting Scan</span>
+                  </div>
+                  <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted); max-width: 600px;" id="res-recycle-summary-text">
+                    Scan waste to view verified preparation steps, cleaning guidelines, sorting rules, and municipal disposal routes.
+                  </p>
+                </div>
+              </div>
+              <button class="btn btn-primary" id="btn-open-result-recycle-guide" style="padding: 0.75rem 1.4rem; font-weight: 600;">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                How to Recycle This →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW: HOW TO RECYCLE DIRECTORY & GUIDES
+             ================================================================ -->
+        <section id="view-recycling" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">How to Recycle</h1>
+              <p class="view-subtitle">Official verified recycling protocols, material separation guides, decontamination rules, and safe disposal routes.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary" data-navigate="verify">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Scan Waste Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Material Search & Filter Bar -->
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-body" style="padding: 1.25rem;">
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 280px; position: relative;">
+                    <input type="search" id="recycling-search-input" class="form-control" placeholder="Search by waste item (e.g. plastic bottle, pizza box, battery, foil, clothes)...">
+                  </div>
+                </div>
+
+                <!-- Material Category Pills -->
+                <div class="recycling-filter-pills" id="recycling-filter-pills" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button class="filter-pill active" data-material="all">All Materials</button>
+                  <button class="filter-pill" data-material="plastic">Plastics</button>
+                  <button class="filter-pill" data-material="paper">Paper & Cardboard</button>
+                  <button class="filter-pill" data-material="glass">Glass</button>
+                  <button class="filter-pill" data-material="metal">Metals</button>
+                  <button class="filter-pill" data-material="e-waste">E-Waste</button>
+                  <button class="filter-pill" data-material="batteries">Batteries</button>
+                  <button class="filter-pill" data-material="organic">Organic / Compost</button>
+                  <button class="filter-pill" data-material="textiles">Textiles</button>
+                  <button class="filter-pill" data-material="hazardous">Hazardous Waste</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories Grid -->
+          <div id="recycling-categories-grid" class="recycling-grid">
+            <!-- Dynamically populated by recycling.js -->
+            <div class="empty-state" style="grid-column: 1 / -1; padding: 3rem 1rem;">
+              <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+              </div>
+              <div class="empty-state-title">Loading Recycling Knowledge Base...</div>
+              <div class="empty-state-desc">Fetching real material standards and safety instructions from backend.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 4: SCAN HISTORY
+             ================================================================ -->
+        <section id="view-history" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Scan History</h1>
+              <p class="view-subtitle">Audit log of verified waste items, authenticity checks, and EPR records.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary" data-navigate="verify">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Verify Waste
+              </button>
+            </div>
+          </div>
+
+          <!-- History Filters Toolbar -->
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 260px;">
+                <input type="search" id="history-search-input" class="form-control" placeholder="Search by Scan ID, Brand, Material...">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <select class="form-control" id="history-filter-status" style="width: auto;" aria-label="Filter by Status">
+                  <option value="all">All Statuses</option>
+                  <option value="verified">Verified</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="pending">Pending</option>
+                </select>
+                <select class="form-control" id="history-filter-material" style="width: auto;" aria-label="Filter by Material">
+                  <option value="all">All Materials</option>
+                  <option value="plastic">Plastic</option>
+                  <option value="metal">Metal</option>
+                  <option value="glass">Glass</option>
+                  <option value="paper">Paper</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table with Professional Empty State -->
+            <div class="table-wrapper" style="border: none; border-radius: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Scan ID</th>
+                    <th>Date</th>
+                    <th>Waste Type</th>
+                    <th>Brand</th>
+                    <th>Verification Score</th>
+                    <th>Status</th>
+                    <th>GreenCoins</th>
+                    <th style="text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8">
+                      <div class="empty-state">
+                        <div class="empty-state-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                        </div>
+                        <div class="empty-state-title">No Scan Records</div>
+                        <div class="empty-state-desc" id="history-empty-desc">No verification records are available yet.</div>
+                        <div class="empty-state-actions">
+                          <button class="btn btn-primary btn-sm" data-navigate="verify">Verify Waste</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 5: GREENCOINS
+             ================================================================ -->
+        <section id="view-rewards" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">GreenCoins</h1>
+              <p class="view-subtitle">Track tokenized incentive balances, recycling bonuses, and redemptions.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline" id="btn-redeem-coins">Redeem Coins</button>
+              <button class="btn btn-primary" data-navigate="verify">Start Recycling</button>
+            </div>
+          </div>
+
+          <!-- Metric Cards -->
+          <div class="stat-card-grid">
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Current Balance</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="8"/>
+                    <line x1="12" y1="2" x2="12" y2="4"/>
+                    <line x1="12" y1="20" x2="12" y2="22"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No GreenCoin data available</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Total Earned</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No reward data available</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Total Redeemed</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                    <polyline points="17 6 23 6 23 12"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No redemption records</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Monthly Earnings</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No reward ledger connected</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- GreenCoins Empty State Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Reward Transactions</h3>
+              <span class="badge badge-neutral">Ledger</span>
+            </div>
+            <div class="card-body">
+              <div class="empty-state">
+                <div class="empty-state-icon">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="8"/>
+                    <line x1="12" y1="2" x2="12" y2="4"/>
+                    <line x1="12" y1="20" x2="12" y2="22"/>
+                  </svg>
+                </div>
+                <div class="empty-state-title">No Reward Data</div>
+                <div class="empty-state-desc">GreenCoins will appear after verified recycling activity is connected.</div>
+                <div class="empty-state-actions">
+                  <button class="btn btn-primary btn-sm" data-navigate="verify">Verify Waste to Earn</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 6: EPR COMPLIANCE
+             ================================================================ -->
+        <section id="view-epr" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">EPR Compliance</h1>
+              <p class="view-subtitle">Manage verified recycling evidence and producer-responsibility records.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline" id="btn-export-epr">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Export Report
+              </button>
+              <button class="btn btn-secondary" id="btn-view-evidence-modal">EPR Evidence Schema</button>
+            </div>
+          </div>
+
+          <!-- EPR Metric Cards -->
+          <div class="stat-card-grid">
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Verified Waste</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No compliance records available</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Brand-Attributed Waste</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>Waiting for verified OCR data</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Compliance Records</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>No audit certificates generated</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">Evidence Verified</span>
+                <div class="stat-card-icon-box">
+                  <svg viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-footer">
+                <span class="status-indicator"></span>
+                <span>Awaiting verified scans</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- EPR Records Table with Empty State -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Producer Responsibility Audit Records</h3>
+              <span class="badge badge-neutral">Regulatory Audit</span>
+            </div>
+            <div class="table-wrapper" style="border: none; border-radius: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Brand</th>
+                    <th>Material</th>
+                    <th>Quantity</th>
+                    <th>Verification Score</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7">
+                      <div class="empty-state">
+                        <div class="empty-state-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                          </svg>
+                        </div>
+                        <div class="empty-state-title">No EPR Records Available</div>
+                        <div class="empty-state-desc">EPR evidence will appear when verification records are available.</div>
+                        <div class="empty-state-actions">
+                          <button class="btn btn-primary btn-sm" data-navigate="verify">Start Verification</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 7: ANALYTICS
+             ================================================================ -->
+        <section id="view-analytics" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Analytics</h1>
+              <p class="view-subtitle">Real-time compliance analytics, material breakdowns, and verification rates.</p>
+            </div>
+            <div class="view-header-actions">
+              <div class="btn-group" style="display: flex; gap: 0.25rem; background: var(--bg-surface); padding: 0.25rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                <button class="btn btn-sm btn-outline analytics-interval-btn active" data-interval="7d">7D</button>
+                <button class="btn btn-sm btn-ghost analytics-interval-btn" data-interval="30d">30D</button>
+                <button class="btn btn-sm btn-ghost analytics-interval-btn" data-interval="90d">90D</button>
+                <button class="btn btn-sm btn-ghost analytics-interval-btn" data-interval="1y">1Y</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty-State Analytics Cards -->
+          <div class="dashboard-grid">
+            <!-- Chart Container 1: Verification Trend -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Verification Trend</h3>
+                <span class="badge badge-neutral">Time Series</span>
+              </div>
+              <div class="card-body">
+                <div class="empty-state" style="padding: 2.5rem 1rem;">
+                  <div class="empty-state-icon">
+                    <svg viewBox="0 0 24 24">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                  </div>
+                  <div class="empty-state-title">Verification Trend</div>
+                  <div class="empty-state-desc">No verification data available to display.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart Container 2: Waste Category Distribution -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Waste Category Distribution</h3>
+                <span class="badge badge-neutral">Material Breakdown</span>
+              </div>
+              <div class="card-body">
+                <div class="empty-state" style="padding: 2.5rem 1rem;">
+                  <div class="empty-state-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                      <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                    </svg>
+                  </div>
+                  <div class="empty-state-title">Waste Category Distribution</div>
+                  <div class="empty-state-desc">No waste data available.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart Container 3: GreenCoins Activity -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">GreenCoins Activity</h3>
+                <span class="badge badge-neutral">Rewards Yield</span>
+              </div>
+              <div class="card-body">
+                <div class="empty-state" style="padding: 2.5rem 1rem;">
+                  <div class="empty-state-icon">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8"/>
+                      <line x1="12" y1="2" x2="12" y2="4"/>
+                      <line x1="12" y1="20" x2="12" y2="22"/>
+                    </svg>
+                  </div>
+                  <div class="empty-state-title">GreenCoins Activity</div>
+                  <div class="empty-state-desc">No reward data available.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart Container 4: Verification Status -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Verification Status Breakdown</h3>
+                <span class="badge badge-neutral">Compliance Index</span>
+              </div>
+              <div class="card-body">
+                <div class="empty-state" style="padding: 2.5rem 1rem;">
+                  <div class="empty-state-icon">
+                    <svg viewBox="0 0 24 24">
+                      <line x1="18" y1="20" x2="18" y2="10"/>
+                      <line x1="12" y1="20" x2="12" y2="4"/>
+                      <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                  </div>
+                  <div class="empty-state-title">Verification Status</div>
+                  <div class="empty-state-desc">No verification records available.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 8: SETTINGS
+             ================================================================ -->
+        <section id="view-settings" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 class="view-title">Settings</h1>
+              <p class="view-subtitle">Manage frontend preferences, visual themes, and layout options.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline" id="btn-reset-settings">Reset to Defaults</button>
+            </div>
+          </div>
+
+          <div class="card" style="max-width: 800px;">
+            <div class="card-header">
+              <h3 class="card-title">Interface & Appearance Preferences</h3>
+              <span class="badge badge-neutral">Client-Side Preferences</span>
+            </div>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: 1.5rem;">
+              
+              <!-- Appearance Theme -->
+              <div class="form-group">
+                <label class="form-label" for="setting-theme">Color Theme</label>
+                <p class="form-hint">Select your preferred visual theme for the GreenLoopAI application.</p>
+                <select id="setting-theme" class="form-control">
+                  <option value="light">Light Mode (Clean Green & White)</option>
+                  <option value="dark">Dark Mode (High Contrast Charcoal)</option>
+                </select>
+              </div>
+
+              <!-- Interface Layout Density -->
+              <div class="form-group">
+                <label class="form-label" for="setting-density">Interface Density</label>
+                <p class="form-hint">Adjust spacing and padding for compact or spacious viewing.</p>
+                <select id="setting-density" class="form-control">
+                  <option value="comfortable">Comfortable (Standard)</option>
+                  <option value="compact">Compact (High Information Density)</option>
+                </select>
+              </div>
+
+              <!-- Font Size -->
+              <div class="form-group">
+                <label class="form-label" for="setting-font-size">Font Scaling</label>
+                <p class="form-hint">Customize typography scale for readability.</p>
+                <select id="setting-font-size" class="form-control">
+                  <option value="small">Small (92%)</option>
+                  <option value="medium" selected>Medium (100% Default)</option>
+                  <option value="large">Large (110%)</option>
+                </select>
+              </div>
+
+              <!-- Accessibility Reduced Motion -->
+              <div class="switch-control">
+                <div class="switch-label-group">
+                  <span class="switch-title">Reduced Motion</span>
+                  <span class="switch-desc">Minimize interface transitions and animation effects.</span>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" id="setting-reduced-motion">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <!-- In-App Notifications -->
+              <div class="switch-control">
+                <div class="switch-label-group">
+                  <span class="switch-title">In-App Toast Notifications</span>
+                  <span class="switch-desc">Display interactive feedback toasts for actions and status changes.</span>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" id="setting-notifications" checked>
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: BACKEND SERVICE NOTICE
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-backend-notice" role="dialog" aria-modal="true" aria-labelledby="modal-backend-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-backend-title">Verification Service Offline</h2>
+        <button class="modal-close-btn" data-modal-close aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          The GreenLoopAI frontend is fully loaded and operational. However, the automated AI inference backend (YOLOv8 vision, EasyOCR brand matching, and EXIF authenticity verification) is not currently connected.
+        </p>
+
+        <div style="background-color: var(--bg-app); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+          <div style="font-weight: 700; color: var(--text-main);">Pipeline Architecture:</div>
+          <div style="color: var(--text-muted);">1. <strong>Waste Detection</strong>: YOLOv8 Computer Vision API</div>
+          <div style="color: var(--text-muted);">2. <strong>Brand OCR</strong>: Text Recognition & Brand Matching API</div>
+          <div style="color: var(--text-muted);">3. <strong>Authenticity</strong>: EXIF Metadata & Temporal Validation</div>
+          <div style="color: var(--text-muted);">4. <strong>Rewards & EPR</strong>: GreenCoins Ledger & Compliance Database</div>
+        </div>
+
+        <p style="font-size: 0.82rem; color: var(--text-light);">
+          When the API server is connected, real verification scores, detected brand attributes, and GreenCoins rewards will populate automatically.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-modal-close>Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: SYSTEM NOTIFICATIONS
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-notifications" role="dialog" aria-modal="true" aria-labelledby="modal-notif-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-notif-title">System Notifications</h2>
+        <button class="modal-close-btn" data-modal-close aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="empty-state" style="padding: 2rem 0;">
+          <div class="empty-state-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+          <div class="empty-state-title">No Unread Notifications</div>
+          <div class="empty-state-desc">System alerts and verification completion updates will appear here.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-modal-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: EPR EVIDENCE RECORD VIEW
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-epr-evidence" role="dialog" aria-modal="true" aria-labelledby="modal-epr-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-epr-title">EPR Evidence Record View</h2>
+        <button class="modal-close-btn" data-modal-close aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; font-size: 0.85rem;">
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Record ID</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Waste Category</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Brand</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Material</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Quantity</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Verification Score</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Authenticity</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Timestamp</span>
+            <span class="preview-meta-value">—</span>
+          </div>
+          <div class="preview-meta-item" style="grid-column: 1 / -1;">
+            <span class="preview-meta-label">Evidence Status</span>
+            <span class="preview-meta-value">Waiting for connected system</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-modal-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: HOW TO RECYCLE GUIDE & SAFETY PROTOCOLS
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-recycling-guide" role="dialog" aria-modal="true" aria-labelledby="modal-recycle-guide-title">
+    <div class="modal-dialog modal-dialog-lg" style="max-width: 820px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="modal-header-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(102, 181, 57, 0.15); color: #4D8F2A; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="modal-recycle-guide-title">Recycling Guide</h2>
+            <span class="modal-subtitle" id="modal-recycle-guide-subtitle">Official preparation & disposal standards</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" data-modal-close aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="recycling-guide-content" style="max-height: 72vh; overflow-y: auto; padding: 1.5rem;">
+        <!-- Dynamically rendered by recycling.js -->
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <button class="btn btn-outline" id="btn-recycle-ask-ai">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+            <path d="M4 11a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7z"/>
+          </svg>
+          Ask AI Assistant More
+        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-primary" data-modal-close>Got It</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       REAL AI ASSISTANT WIDGET (Bottom-Right Floating Interface)
+       ==================================================================== -->
+  <button id="ai-assistant-trigger" class="ai-assistant-trigger" aria-label="Open GreenLoopAI Assistant" title="GreenLoopAI Assistant">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+      <path d="M4 11a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7z"/>
+      <circle cx="9" cy="15" r="1.5"/>
+      <circle cx="15" cy="15" r="1.5"/>
+      <path d="M10 19v2"/>
+      <path d="M14 19v2"/>
+    </svg>
+    <span class="ai-trigger-badge"></span>
+  </button>
+
+  <div id="ai-assistant-window" class="ai-assistant-window" role="dialog" aria-modal="false" aria-labelledby="ai-chat-title">
+    <!-- Header -->
+    <div class="ai-assistant-header">
+      <div class="ai-header-info">
+        <div class="ai-header-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="ai-header-text">
+          <span class="ai-header-title" id="ai-chat-title">GreenLoopAI Assistant</span>
+          <span class="ai-header-subtitle">AI-powered project assistant</span>
+        </div>
+      </div>
+      <div class="ai-header-actions">
+        <button class="ai-action-btn" id="ai-btn-clear" title="Clear Conversation" aria-label="Clear Conversation">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+        <button class="ai-action-btn" id="ai-btn-minimize" title="Minimize" aria-label="Minimize">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+        <button class="ai-action-btn" id="ai-btn-close" title="Close" aria-label="Close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="ai-chat-messages" class="ai-assistant-messages" aria-live="polite"></div>
+
+    <!-- Footer / Input -->
+    <div class="ai-assistant-footer">
+      <input type="text" id="ai-chat-input" class="ai-input-field" placeholder="Ask GreenLoopAI anything..." autocomplete="off">
+      <button id="ai-chat-send" class="ai-send-btn" aria-label="Send message">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/verification.js"></script>
+  <script src="js/recycling.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/rewards.js"></script>
+  <script src="js/epr.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>

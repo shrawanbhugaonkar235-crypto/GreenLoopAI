@@ -1,0 +1,298 @@
+/* ==========================================================================
+   GREENLOOPAI — App-specific additions
+   (processing stages, history filters, settings, GreenCoins)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Processing status / pipeline stage list
+   -------------------------------------------------------------------------- */
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.stage-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.stage-row[data-state="running"] {
+  border-color: rgba(102, 181, 57, 0.45);
+  background-color: var(--light-green-subtle);
+}
+
+.stage-row[data-state="failed"] {
+  border-color: rgba(220, 38, 38, 0.35);
+  background-color: var(--danger-light);
+}
+
+.stage-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.stage-row[data-state="running"] .stage-marker {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.stage-row[data-state="failed"] .stage-marker {
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.stage-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.stage-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.stage-desc {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.stage-state {
+  flex-shrink: 0;
+}
+
+/* Small inline spinner for a running stage */
+.stage-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(102, 181, 57, 0.3);
+  border-top-color: var(--primary-dark);
+  animation: btnSpin 0.6s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Result rows / key-value readouts
+   -------------------------------------------------------------------------- */
+.kv-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.kv-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+.kv-row:last-child {
+  border-bottom: none;
+}
+
+.kv-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.kv-value {
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+  word-break: break-word;
+}
+
+.kv-value.is-empty {
+  color: var(--text-light);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.kv-value.mono {
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   History toolbar / filters
+   -------------------------------------------------------------------------- */
+.filter-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-toolbar .form-control {
+  width: auto;
+  min-width: 165px;
+  height: 38px;
+}
+
+.filter-spacer {
+  margin-left: auto;
+}
+
+.result-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   GreenCoins balance panel
+   -------------------------------------------------------------------------- */
+.coin-balance-card {
+  background: linear-gradient(135deg, var(--light-green) 0%, var(--bg-surface) 100%);
+  border: 1px solid rgba(102, 181, 57, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.coin-balance-left {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.coin-balance-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.coin-balance-value {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--primary-dark);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+}
+
+.coin-balance-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* --------------------------------------------------------------------------
+   Settings layout
+   -------------------------------------------------------------------------- */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Shared helpers
+   -------------------------------------------------------------------------- */
+.is-hidden {
+  display: none !important;
+}
+
+.text-muted-sm {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.welcome-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Primary call-to-action card on the dashboard */
+.cta-card {
+  background: linear-gradient(120deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 24px -10px rgba(77, 146, 42, 0.6);
+}
+
+.cta-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cta-desc {
+  font-size: 0.88rem;
+  opacity: 0.92;
+  margin-top: 0.3rem;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+.btn-on-dark {
+  background-color: #ffffff;
+  color: var(--primary-dark);
+}
+
+.btn-on-dark:hover {
+  background-color: #f2fbea;
+}
+
+@media (max-width: 768px) {
+  .coin-balance-card,
+  .cta-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-spacer {
+    margin-left: 0;
+  }
+
+  .filter-toolbar .form-control {
+    width: 100%;
+  }
+}

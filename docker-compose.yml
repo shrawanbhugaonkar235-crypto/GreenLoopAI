@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Relational Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: greenloop-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: greenloop_db
+      POSTGRES_USER: greenloop
+      POSTGRES_PASSWORD: greenloop_secure_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U greenloop -d greenloop_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. FastAPI AI & Verification Service
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: greenloop-ai-service
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg2://greenloop:greenloop_secure_password@postgres:5432/greenloop_db
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      YOLO_MODEL_PATH: models/yolov8n.pt
+      FASTAPI_SERVICE_TOKEN: ${FASTAPI_SERVICE_TOKEN:-dev-internal-secret-token}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./ai-service/models:/app/models
+
+  # 3. Java Spring Boot Security Gateway
+  security-service:
+    build:
+      context: ./security-service
+      dockerfile: Dockerfile
+    container_name: greenloop-security-gateway
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8080
+      APP_GATEWAY_FASTAPI_URL: http://ai-service:8000
+      APP_GATEWAY_SERVICE_SECRET: ${FASTAPI_SERVICE_TOKEN:-dev-internal-secret-token}
+      APP_CORS_ALLOWED_ORIGINS: http://localhost,http://localhost:3000,http://localhost:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+
+  # 4. Frontend Web UI (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: greenloop-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - security-service
+
+volumes:
+  postgres_data:

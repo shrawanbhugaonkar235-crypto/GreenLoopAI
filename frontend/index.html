@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenLoopAI — AI-Powered Smart Waste Verification</title>
+  <meta name="description" content="GreenLoopAI is an AI-powered citizen platform for smart waste verification: upload a waste image, run YOLO detection, OCR and EXIF authenticity checks, get a verification score and earn GreenCoins." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/verification.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<!-- ==================================================================
+         Icon sprite — referenced with <use href="#icon-name" />
+         ================================================================== -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="icon-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+        </symbol>
+        <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+        </symbol>
+        <symbol id="icon-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+          <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+          <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+          <path d="M7 12h10" />
+        </symbol>
+        <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <path d="M17 8l-5-5-5 5" />
+          <path d="M12 3v12" />
+        </symbol>
+        <symbol id="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="2" width="8" height="4" rx="1" />
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <path d="M9 12h6" />
+          <path d="M9 16h4" />
+        </symbol>
+        <symbol id="icon-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M14.5 9.5a2.5 2.5 0 0 0-2.5-1.5c-1.5 0-2.5.8-2.5 2s1 1.8 2.5 2 2.5.8 2.5 2-1 2-2.5 2a2.5 2.5 0 0 1-2.5-1.5" />
+          <path d="M12 6.5v11" />
+        </symbol>
+        <symbol id="icon-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v5h5" />
+          <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
+          <path d="M12 7v5l4 2" />
+        </symbol>
+        <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+        </symbol>
+        <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </symbol>
+        <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </symbol>
+        <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
+          <circle cx="12" cy="12" r="3" />
+        </symbol>
+        <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19M6.61 6.61A18.5 18.5 0 0 0 2 11s3.6 7 10 7a9.12 9.12 0 0 0 2.1-.24" />
+          <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+          <path d="M2 2l20 20" />
+        </symbol>
+        <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </symbol>
+        <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5" />
+        </symbol>
+        <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </symbol>
+        <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="9" cy="9" r="2" />
+          <path d="m21 15-4.35-4.35a2 2 0 0 0-2.83 0L4 21" />
+        </symbol>
+        <symbol id="icon-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7V5h16v2" />
+          <path d="M12 5v14" />
+          <path d="M9 19h6" />
+        </symbol>
+        <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+        </symbol>
+        <symbol id="icon-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 14 L16 10" />
+          <path d="M3.5 18a9 9 0 1 1 17 0Z" />
+        </symbol>
+        <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </symbol>
+        <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-3-6.7L21 8" />
+          <path d="M21 3v5h-5" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- ==================================================================
+         A. LOGIN / REGISTER SCREEN
+         ================================================================== -->
+    <div id="auth-screen" class="active" data-testid="auth-screen">
+      <div class="auth-card" data-testid="auth-card">
+        <div class="auth-brand">
+          <div class="sidebar-brand-logo">
+            <svg width="20" height="20"><use href="#icon-leaf" /></svg>
+          </div>
+          <div class="sidebar-brand-text">
+            <div class="brand-title">Green<span>Loop</span>AI</div>
+            <div class="brand-subtitle">Smart Waste Verification</div>
+          </div>
+        </div>
+
+        <div class="auth-heading">
+          <h1 class="auth-title" id="auth-title" data-testid="auth-title">Sign in to your account</h1>
+          <p class="auth-subtitle" id="auth-subtitle" data-testid="auth-subtitle">
+            Verify your waste disposal with AI and earn GreenCoins for every validated contribution.
+          </p>
+        </div>
+
+        <form class="auth-form" id="auth-form" novalidate data-testid="auth-form">
+          <!-- Full name — registration only -->
+          <div class="form-group is-hidden" id="name-field-group" data-testid="name-field-group">
+            <label class="form-label" for="auth-name">Full name</label>
+            <input
+              class="form-control"
+              type="text"
+              id="auth-name"
+              name="name"
+              autocomplete="name"
+              placeholder="e.g. Aarav Sharma"
+              data-testid="auth-name-input"
+            />
+            <span class="field-error" id="name-error" data-testid="auth-name-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="auth-email">Email address</label>
+            <input
+              class="form-control"
+              type="email"
+              id="auth-email"
+              name="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              data-testid="auth-email-input"
+            />
+            <span class="field-error" id="email-error" data-testid="auth-email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="auth-password">Password</label>
+            <div class="password-wrapper">
+              <input
+                class="form-control"
+                type="password"
+                id="auth-password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="At least 6 characters"
+                data-testid="auth-password-input"
+              />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                id="password-toggle"
+                aria-label="Show password"
+                data-testid="auth-password-toggle"
+              >
+                <svg id="password-toggle-icon"><use href="#icon-eye" /></svg>
+              </button>
+            </div>
+            <span class="field-error" id="password-error" data-testid="auth-password-error"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" id="auth-submit-btn" data-testid="auth-submit-button">
+            <span class="btn-spinner"></span>
+            <span id="auth-submit-label">Sign in</span>
+          </button>
+        </form>
+
+        <p class="auth-footer-text">
+          <span id="auth-switch-text">New to GreenLoopAI?</span>
+          <button type="button" class="auth-link-btn" id="auth-switch-btn" data-testid="auth-switch-button">
+            Create an account
+          </button>
+        </p>
+
+        <p class="auth-note" data-testid="auth-demo-note">
+          Secure citizen platform powered by FastAPI and MongoDB Atlas. Passwords are encrypted with bcrypt, and verified submissions and GreenCoins rewards are permanently persisted.
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         APPLICATION SHELL
+         ================================================================== -->
+    <div id="app-root" class="is-hidden" data-testid="app-root">
+      <!-- Mobile sidebar backdrop -->
+      <div class="sidebar-overlay" id="sidebar-overlay" data-testid="sidebar-overlay"></div>
+
+      <!-- ---------------- Sidebar ---------------- -->
+      <aside class="app-sidebar" id="app-sidebar" data-testid="app-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand-logo">
+            <svg width="20" height="20"><use href="#icon-leaf" /></svg>
+          </div>
+          <div class="sidebar-brand-text">
+            <div class="brand-title">Green<span>Loop</span>AI</div>
+            <div class="brand-subtitle">Smart Waste Verification</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav" data-testid="sidebar-nav">
+          <div class="nav-section-label">Citizen</div>
+
+          <a class="nav-item active" data-view="dashboard" data-testid="nav-dashboard">
+            <svg class="nav-icon"><use href="#icon-grid" /></svg>
+            <span class="nav-item-label">Dashboard</span>
+          </a>
+          <a class="nav-item" data-view="verify" data-testid="nav-verify">
+            <svg class="nav-icon"><use href="#icon-scan" /></svg>
+            <span class="nav-item-label">Verify Waste</span>
+          </a>
+          <a class="nav-item" data-view="result" data-testid="nav-result">
+            <svg class="nav-icon"><use href="#icon-clipboard" /></svg>
+            <span class="nav-item-label">Verification Result</span>
+          </a>
+
+          <div class="nav-section-label">Rewards</div>
+
+          <a class="nav-item" data-view="greencoins" data-testid="nav-greencoins">
+            <svg class="nav-icon"><use href="#icon-coin" /></svg>
+            <span class="nav-item-label">GreenCoins</span>
+            <span class="nav-badge" id="sidebar-coin-badge" data-testid="sidebar-coin-badge">0</span>
+          </a>
+          <a class="nav-item" data-view="history" data-testid="nav-history">
+            <svg class="nav-icon"><use href="#icon-history" /></svg>
+            <span class="nav-item-label">History</span>
+          </a>
+
+          <div class="nav-section-label">Account</div>
+
+          <a class="nav-item" data-view="settings" data-testid="nav-settings">
+            <svg class="nav-icon"><use href="#icon-settings" /></svg>
+            <span class="nav-item-label">Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="system-status-indicator" data-testid="sidebar-service-status">
+            <span class="status-dot disconnected" id="service-status-dot"></span>
+            <div>
+              <div class="status-text" id="service-status-text">Checking service…</div>
+              <div class="status-sub" id="service-status-sub">Verification API</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" id="sidebar-logout-btn" data-testid="sidebar-logout-button">
+            <svg class="btn-icon"><use href="#icon-logout" /></svg>
+            Sign out
+          </button>
+        </div>
+      </aside>
+
+      <!-- ---------------- Main ---------------- -->
+      <div class="app-main">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation" data-testid="sidebar-toggle-button">
+              <svg class="btn-icon"><use href="#icon-menu" /></svg>
+            </button>
+            <div class="topbar-breadcrumb">
+              <span class="breadcrumb-app">GreenLoopAI</span>
+              <span class="breadcrumb-separator">/</span>
+              <span class="breadcrumb-current" id="breadcrumb-current" data-testid="breadcrumb-current">Dashboard</span>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <div class="user-profile-chip" data-testid="topbar-user-chip">
+              <span class="user-avatar" id="topbar-user-initials" data-testid="topbar-user-initials">GL</span>
+              <span class="user-info-text">
+                <span class="user-name" id="topbar-user-name" data-testid="topbar-user-name">Citizen</span>
+                <span class="user-status">Citizen account</span>
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-workspace" id="app-workspace">
+          <!-- ============================================================
+               B. CITIZEN DASHBOARD
+               ============================================================ -->
+          <section class="view-section active" id="view-dashboard" data-testid="view-dashboard">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title" data-testid="dashboard-welcome-title">
+                  Welcome back, <span id="dashboard-user-name">Citizen</span>
+                </h1>
+                <p class="view-subtitle">
+                  Upload a waste image to run detection, authenticity checks and scoring.
+                </p>
+              </div>
+            </div>
+
+            <!-- Primary action -->
+            <div class="cta-card" data-testid="dashboard-cta-card">
+              <div>
+                <div class="cta-title">Verify Waste</div>
+                <p class="cta-desc">
+                  Submit a photo of your segregated waste. GreenLoopAI runs YOLO object detection, OCR
+                  text extraction and EXIF metadata checks to compute your verification score.
+                </p>
+              </div>
+              <div class="welcome-banner-actions">
+                <button class="btn btn-on-dark btn-lg" data-nav="verify" data-testid="dashboard-verify-waste-button">
+                  <svg class="btn-icon"><use href="#icon-scan" /></svg>
+                  Start verification
+                </button>
+              </div>
+            </div>
+
+            <!-- Service availability notice -->
+            <div class="service-status-box" id="dashboard-service-box" data-testid="dashboard-service-notice">
+              <svg><use href="#icon-alert" /></svg>
+              <span id="dashboard-service-message">
+                Checking whether the verification service is available…
+              </span>
+            </div>
+
+            <!-- Summary cards -->
+            <div class="stat-card-grid">
+              <div class="stat-card" data-testid="dashboard-stat-greencoins">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">GreenCoins balance</span>
+                  <span class="stat-card-icon-box"><svg><use href="#icon-coin" /></svg></span>
+                </div>
+                <div class="stat-card-value" id="dashboard-coin-balance" data-testid="dashboard-coin-balance">—</div>
+                <div class="stat-card-footer" id="dashboard-coin-footer">
+                  <span class="status-indicator"></span>
+                  <span>Awaiting verified rewards</span>
+                </div>
+              </div>
+
+              <div class="stat-card" data-testid="dashboard-stat-verifications">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">Verifications run</span>
+                  <span class="stat-card-icon-box"><svg><use href="#icon-scan" /></svg></span>
+                </div>
+                <div class="stat-card-value" id="dashboard-verification-count" data-testid="dashboard-verification-count">0</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>This session</span>
+                </div>
+              </div>
+
+              <div class="stat-card" data-testid="dashboard-stat-score">
+                <div class="stat-card-header">
+                  <span class="stat-card-label">Latest score V</span>
+                  <span class="stat-card-icon-box"><svg><use href="#icon-gauge" /></svg></span>
+                </div>
+                <div class="stat-card-value" id="dashboard-latest-score" data-testid="dashboard-latest-score">—</div>
+                <div class="stat-card-footer">
+                  <span class="status-indicator"></span>
+                  <span>No scored verification yet</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick actions -->
+            <div class="quick-action-grid">
+              <a class="quick-action-card" data-nav="verify" data-testid="dashboard-quick-upload">
+                <span class="quick-action-icon"><svg><use href="#icon-upload" /></svg></span>
+                <span class="quick-action-title">Upload an image</span>
+                <span class="quick-action-desc">Drag and drop or browse for a JPG, PNG or WEBP waste photo.</span>
+              </a>
+              <a class="quick-action-card" data-nav="greencoins" data-testid="dashboard-quick-greencoins">
+                <span class="quick-action-icon"><svg><use href="#icon-coin" /></svg></span>
+                <span class="quick-action-title">GreenCoins</span>
+                <span class="quick-action-desc">Review your reward balance and earning activity.</span>
+              </a>
+              <a class="quick-action-card" data-nav="history" data-testid="dashboard-quick-history">
+                <span class="quick-action-icon"><svg><use href="#icon-history" /></svg></span>
+                <span class="quick-action-title">History</span>
+                <span class="quick-action-desc">Browse your previous scans, categories and scores.</span>
+              </a>
+            </div>
+
+            <!-- Pipeline overview -->
+            <div class="pipeline-overview-card">
+              <div class="pipeline-overview-header">
+                <div>
+                  <div class="card-title">Verification pipeline</div>
+                  <div class="card-subtitle">How a submitted image is assessed</div>
+                </div>
+                <span class="pipeline-badge">4 stages</span>
+              </div>
+              <div class="workflow-pipeline">
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">01</span>
+                    <svg class="workflow-step-icon"><use href="#icon-image" /></svg>
+                  </div>
+                  <div class="workflow-step-title">YOLO detection</div>
+                  <div class="workflow-step-desc">Locates and classifies waste objects in the photo.</div>
+                </div>
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">02</span>
+                    <svg class="workflow-step-icon"><use href="#icon-text" /></svg>
+                  </div>
+                  <div class="workflow-step-title">OCR &amp; EXIF</div>
+                  <div class="workflow-step-desc">Reads label text and checks image metadata for authenticity.</div>
+                </div>
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">03</span>
+                    <svg class="workflow-step-icon"><use href="#icon-gauge" /></svg>
+                  </div>
+                  <div class="workflow-step-title">Score V</div>
+                  <div class="workflow-step-desc">Combines detection, text and authenticity into one score.</div>
+                </div>
+                <div class="workflow-step-card">
+                  <div class="workflow-step-header">
+                    <span class="workflow-step-number">04</span>
+                    <svg class="workflow-step-icon"><use href="#icon-coin" /></svg>
+                  </div>
+                  <div class="workflow-step-title">GreenCoins</div>
+                  <div class="workflow-step-desc">Issues a reward when the verification score passes.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent verifications -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Recent verification history</div>
+                  <div class="card-subtitle">Your most recent submissions in this session</div>
+                </div>
+                <button class="btn btn-outline btn-sm" data-nav="history" data-testid="dashboard-view-all-history">
+                  View all
+                </button>
+              </div>
+              <div class="card-body" id="dashboard-recent-container" data-testid="dashboard-recent-container">
+                <!-- Rendered by js/views.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               C. WASTE UPLOAD & VERIFICATION
+               ============================================================ -->
+          <section class="view-section" id="view-verify" data-testid="view-verify">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title">Verify Waste</h1>
+                <p class="view-subtitle">
+                  Upload a waste image, then run the verification pipeline.
+                </p>
+              </div>
+            </div>
+
+            <div class="service-status-box" id="verify-service-box" data-testid="verify-service-notice">
+              <svg><use href="#icon-alert" /></svg>
+              <span id="verify-service-message">Checking whether the verification service is available…</span>
+            </div>
+
+            <div class="verification-layout">
+              <!-- Upload panel -->
+              <div class="upload-panel">
+                <div class="upload-dropzone" id="upload-dropzone" data-testid="upload-dropzone">
+                  <div class="upload-icon-circle"><svg><use href="#icon-upload" /></svg></div>
+                  <div class="upload-title">Drag &amp; drop your waste image</div>
+                  <p class="upload-subtitle">
+                    Place a clear, well-lit photo of your segregated waste here, or browse your device.
+                  </p>
+                  <button class="btn btn-primary" type="button" id="browse-files-btn" data-testid="browse-files-button">
+                    <svg class="btn-icon"><use href="#icon-image" /></svg>
+                    Browse files
+                  </button>
+                  <div class="upload-meta-info">
+                    <span class="upload-meta-pill">JPG</span>
+                    <span class="upload-meta-pill">JPEG</span>
+                    <span class="upload-meta-pill">PNG</span>
+                    <span class="upload-meta-pill">WEBP</span>
+                    <span>Max 10 MB</span>
+                  </div>
+                </div>
+
+                <input
+                  type="file"
+                  id="file-input"
+                  class="is-hidden"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  data-testid="file-input"
+                />
+
+                <!-- Preview card -->
+                <div class="preview-card" id="preview-card" data-testid="preview-card">
+                  <div class="preview-image-container">
+                    <img class="preview-image" id="preview-image" alt="Selected waste image preview" data-testid="preview-image" />
+                  </div>
+                  <div class="preview-details">
+                    <div class="preview-meta-grid">
+                      <div class="preview-meta-item">
+                        <span class="preview-meta-label">File name</span>
+                        <span class="preview-meta-value" id="preview-filename" data-testid="preview-filename">—</span>
+                      </div>
+                      <div class="preview-meta-item">
+                        <span class="preview-meta-label">File size</span>
+                        <span class="preview-meta-value" id="preview-filesize" data-testid="preview-filesize">—</span>
+                      </div>
+                      <div class="preview-meta-item">
+                        <span class="preview-meta-label">Format</span>
+                        <span class="preview-meta-value" id="preview-filetype" data-testid="preview-filetype">—</span>
+                      </div>
+                    </div>
+                    <div class="preview-actions">
+                      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap">
+                        <button class="btn btn-outline btn-sm" type="button" id="replace-image-btn" data-testid="replace-image-button">
+                          <svg class="btn-icon"><use href="#icon-refresh" /></svg>
+                          Replace
+                        </button>
+                        <button class="btn btn-danger-outline btn-sm" type="button" id="remove-image-btn" data-testid="remove-image-button">
+                          <svg class="btn-icon"><use href="#icon-x" /></svg>
+                          Remove
+                        </button>
+                      </div>
+                      <button class="btn btn-primary btn-lg" type="button" id="verify-waste-btn" data-testid="verify-waste-button">
+                        <span class="btn-spinner"></span>
+                        <svg class="btn-icon"><use href="#icon-scan" /></svg>
+                        Verify Waste
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Processing status panel -->
+              <div class="verification-results-panel">
+                <div class="card">
+                  <div class="card-header">
+                    <div>
+                      <div class="card-title">Processing status</div>
+                      <div class="card-subtitle">Pipeline stages for the current submission</div>
+                    </div>
+                    <span class="badge badge-neutral" id="processing-overall-badge" data-testid="processing-overall-badge">
+                      <span class="badge-dot"></span> Idle
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <div class="stage-list" id="stage-list" data-testid="stage-list">
+                      <div class="stage-row" data-stage="detection" data-state="idle">
+                        <span class="stage-marker">01</span>
+                        <div class="stage-body">
+                          <span class="stage-name">YOLO waste-object detection</span>
+                          <span class="stage-desc">Identify the waste category in the image.</span>
+                        </div>
+                        <span class="stage-state" data-testid="stage-state-detection">
+                          <span class="badge badge-neutral">Pending</span>
+                        </span>
+                      </div>
+                      <div class="stage-row" data-stage="ocr" data-state="idle">
+                        <span class="stage-marker">02</span>
+                        <div class="stage-body">
+                          <span class="stage-name">OCR text extraction</span>
+                          <span class="stage-desc">Read any printed label or packaging text.</span>
+                        </div>
+                        <span class="stage-state" data-testid="stage-state-ocr">
+                          <span class="badge badge-neutral">Pending</span>
+                        </span>
+                      </div>
+                      <div class="stage-row" data-stage="exif" data-state="idle">
+                        <span class="stage-marker">03</span>
+                        <div class="stage-body">
+                          <span class="stage-name">EXIF metadata check</span>
+                          <span class="stage-desc">Assess whether the photo looks original.</span>
+                        </div>
+                        <span class="stage-state" data-testid="stage-state-exif">
+                          <span class="badge badge-neutral">Pending</span>
+                        </span>
+                      </div>
+                      <div class="stage-row" data-stage="score" data-state="idle">
+                        <span class="stage-marker">04</span>
+                        <div class="stage-body">
+                          <span class="stage-name">Verification score V</span>
+                          <span class="stage-desc">Combine all signals into a single score.</span>
+                        </div>
+                        <span class="stage-state" data-testid="stage-state-score">
+                          <span class="badge badge-neutral">Pending</span>
+                        </span>
+                      </div>
+                      <div class="stage-row" data-stage="reward" data-state="idle">
+                        <span class="stage-marker">05</span>
+                        <div class="stage-body">
+                          <span class="stage-name">GreenCoins reward</span>
+                          <span class="stage-desc">Issue reward coins for a passing score.</span>
+                        </div>
+                        <span class="stage-state" data-testid="stage-state-reward">
+                          <span class="badge badge-neutral">Pending</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer" style="justify-content: space-between">
+                    <span class="text-muted-sm" id="processing-hint" data-testid="processing-hint">
+                      Select an image to enable verification.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               D. VERIFICATION RESULT
+               ============================================================ -->
+          <section class="view-section" id="view-result" data-testid="view-result">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title">Verification Result</h1>
+                <p class="view-subtitle">Detection, authenticity, score V and reward outcome.</p>
+              </div>
+              <div class="view-header-actions">
+                <button class="btn btn-outline" data-nav="verify" data-testid="result-new-verification-button">
+                  <svg class="btn-icon"><use href="#icon-scan" /></svg>
+                  New verification
+                </button>
+              </div>
+            </div>
+
+            <div id="result-content" data-testid="result-content">
+              <!-- Rendered by js/views.js -->
+            </div>
+          </section>
+
+          <!-- ============================================================
+               E. GREENCOINS
+               ============================================================ -->
+          <section class="view-section" id="view-greencoins" data-testid="view-greencoins">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title">GreenCoins</h1>
+                <p class="view-subtitle">Rewards earned from successfully verified waste submissions.</p>
+              </div>
+            </div>
+
+            <div class="coin-balance-card" data-testid="greencoins-balance-card">
+              <div class="coin-balance-left">
+                <span class="rewards-coin-icon"><svg><use href="#icon-coin" /></svg></span>
+                <div>
+                  <div class="coin-balance-label">Available balance</div>
+                  <div class="coin-balance-value" id="greencoins-balance" data-testid="greencoins-balance">—</div>
+                  <div class="coin-balance-sub" id="greencoins-balance-sub">
+                    No verified rewards yet — balance appears once a verification succeeds.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Transaction activity</div>
+                  <div class="card-subtitle">Coins credited per verified submission</div>
+                </div>
+              </div>
+              <div class="card-body" id="greencoins-transactions" data-testid="greencoins-transactions">
+                <!-- Rendered by js/views.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               F. HISTORY
+               ============================================================ -->
+          <section class="view-section" id="view-history" data-testid="view-history">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title">History</h1>
+                <p class="view-subtitle">Previous scans with timestamps, categories, scores and status.</p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="filter-toolbar" style="width: 100%">
+                  <select class="form-control" id="history-status-filter" data-testid="history-status-filter">
+                    <option value="all">All statuses</option>
+                    <option value="verified">Verified</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="unavailable">Service unavailable</option>
+                  </select>
+                  <input
+                    class="form-control"
+                    type="search"
+                    id="history-search"
+                    placeholder="Search file or category…"
+                    data-testid="history-search-input"
+                  />
+                  <span class="result-count filter-spacer" id="history-count" data-testid="history-count"></span>
+                </div>
+              </div>
+              <div class="card-body" id="history-container" data-testid="history-container">
+                <!-- Rendered by js/views.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               G. SETTINGS
+               ============================================================ -->
+          <section class="view-section" id="view-settings" data-testid="view-settings">
+            <div class="view-header">
+              <div class="view-title-group">
+                <h1 class="view-title">Settings</h1>
+                <p class="view-subtitle">Account information and interface preferences.</p>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <div class="card-title">Account information</div>
+                    <div class="card-subtitle">Details for your citizen profile</div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <form class="form-stack" id="account-form" data-testid="settings-account-form">
+                    <div class="form-group">
+                      <label class="form-label" for="settings-name">Full name</label>
+                      <input class="form-control" type="text" id="settings-name" data-testid="settings-name-input" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-email">Email address</label>
+                      <input class="form-control" type="email" id="settings-email" data-testid="settings-email-input" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-city">City / ward</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="settings-city"
+                        placeholder="e.g. Pune, Ward 12"
+                        data-testid="settings-city-input"
+                      />
+                      <span class="form-hint">Used to label your submissions once a backend is connected.</span>
+                    </div>
+                    <button class="btn btn-primary" type="submit" data-testid="settings-save-account-button">
+                      <svg class="btn-icon"><use href="#icon-check" /></svg>
+                      Save account details
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <div class="card-title">Interface preferences</div>
+                    <div class="card-subtitle">Applied immediately in this browser</div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="switch-control">
+                    <div class="switch-label-group">
+                      <span class="switch-title">Dark theme</span>
+                      <span class="switch-desc">Switch the dashboard to a dark colour scheme.</span>
+                    </div>
+                    <label class="switch-toggle" data-testid="settings-dark-theme-toggle">
+                      <input type="checkbox" id="pref-dark-theme" data-testid="settings-dark-theme-input" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <div class="switch-control">
+                    <div class="switch-label-group">
+                      <span class="switch-title">Compact density</span>
+                      <span class="switch-desc">Reduce spacing to fit more content on screen.</span>
+                    </div>
+                    <label class="switch-toggle" data-testid="settings-compact-toggle">
+                      <input type="checkbox" id="pref-compact" data-testid="settings-compact-input" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <div class="switch-control">
+                    <div class="switch-label-group">
+                      <span class="switch-title">Reduced motion</span>
+                      <span class="switch-desc">Minimise animations and transitions.</span>
+                    </div>
+                    <label class="switch-toggle" data-testid="settings-reduced-motion-toggle">
+                      <input type="checkbox" id="pref-reduced-motion" data-testid="settings-reduced-motion-input" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <p class="auth-note" style="margin-top: 1rem">
+                    Preferences are stored locally in this browser only. No login credentials are saved.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" data-testid="toast-container"></div>
+
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/views.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

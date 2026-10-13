@@ -1,0 +1,42 @@
+server:
+  port: ${SPRING_PORT:8080}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: greenloopai-security-service
+  servlet:
+    multipart:
+      max-file-size: ${MAX_UPLOAD_SIZE:10MB}
+      max-request-size: ${MAX_UPLOAD_SIZE:10MB}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/greenloopai}
+          audiences: ${JWT_AUDIENCE:greenloopai-client}
+
+greenloopai:
+  fastapi:
+    base-url: ${FASTAPI_BASE_URL:http://localhost:8000}
+    service-token: ${FASTAPI_SERVICE_TOKEN:dev-internal-secret-token}
+    connect-timeout-ms: 5000
+    read-timeout-ms: 30000
+  security:
+    cors:
+      allowed-origins: ${FRONTEND_ORIGIN:http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:5500}
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+      allowed-headers: Authorization,Content-Type,X-Request-Id,X-Requested-With,Accept
+      exposed-headers: X-Request-Id
+      allow-credentials: true
+    rate-limit:
+      enabled: true
+      requests-per-minute: 120
+      burst-capacity: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
